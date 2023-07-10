@@ -61,13 +61,14 @@ d3.json("../prova.json")
             .domain(foundationFoods.map(function (d) { return d["description"] }))
             .padding(.1);
 
-        // d3.axisLeft() takes the y scaleBand as a parameter
-        svgContainer.append("g")
+        // Draw Y axis on left. d3.axisLeft() takes the y scaleBand as a parameter
+        var yAxis = svgContainer.append("g")
             .call(d3.axisLeft(y))
             .attr("transform", "translate(" + barChartMargins.left + ",40)")
 
+
         // Add bars
-        svgContainer.selectAll("myRect")
+        var bars = svgContainer.selectAll("bars")
             .data(foundationFoods)
             .enter()
             .append("rect")
@@ -78,7 +79,8 @@ d3.json("../prova.json")
             .attr("fill", "#69b3a2")
             .attr("transform", "translate(0," + barChartMargins.top + ")")      // necessario per spostare il grafico nel punto giusto
 
-
+        bars.on("mouseover", function () { d3.select(this).attr("fill", "orange") })
+        bars.on("mouseout", function () { d3.select(this).attr("fill", "#69b3a2") })
         /*
         data.forEach(datacase => {
             drawBar(datacase, offset)
