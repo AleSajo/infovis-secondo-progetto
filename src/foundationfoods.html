@@ -5,10 +5,26 @@
     <meta charset="utf-8">
     <title>D3.js Foundation Foods</title>
     <style>
+        .button {
+            width: 120px;
+            height: 30px;
+            margin-right: 10px;
+        }
     </style>
 </head>
 
-<body>
+<body style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+    <div style="margin-left: 40px; margin-top: 20px;">
+        <span style="font-family: sans-serif; margin-right: 10px;">Sort by: </span>
+        <button id="sortByKcalButton">Kcal</button>
+        <button id="sortByWaterButton">Water</button>
+        <button id="sortByProteinButton">Protein</button>
+        <button id="sortByTotalLipidButton">Total lipid</button>
+        <button id="sortByCarbohydratesButton">Carbohydrates</button>
+    </div>
+    <div style="margin-left: 40px; margin-top: 20px;">
+        <span style="font-family: sans-serif; margin-right: 10px;">All reported values are for a portion of 100g</span>
+    </div>
     <script src="../lib/d3-7.8.4/dist/d3.min.js"></script>
     <script src="foundationfoods.js"></script>
 </body>
