@@ -16,10 +16,6 @@ const barChartMargins = {
 const width = window.innerWidth - margins.left;
 const height = window.innerHeight - margins.top;
 
-// set scales for svg
-var yScale = d3.scaleBand().range([0, height - 100]);   // range della visualizzazione, poi dovrei aggiornare il domain quando disegno
-var xScale = d3.scaleLinear().range([0, width]);  // range della visualizzazione, poi dovrei aggiornare il domain quando disegno
-
 
 // Create an SVG container in the document body
 var svgContainer = d3.select("body")
@@ -68,10 +64,14 @@ d3.json("../prova.json")
 
 
         // Add bars
-        var bars = svgContainer.selectAll("bars")
+        // Bind data and draw bars
+        svgContainer.append("g")
+            .attr("class", "bars")
+            .selectAll("bars")
             .data(foundationFoods)
             .enter()
             .append("rect")
+            .attr("class", "bar")
             .attr("x", barChartMargins.left)
             .attr("y", function (d) { return y(d["description"]) })
             .attr("width", function (d) { return x(d["foodNutrients"][1]["amount"]); })
@@ -79,8 +79,25 @@ d3.json("../prova.json")
             .attr("fill", "#69b3a2")
             .attr("transform", "translate(0," + barChartMargins.top + ")")      // necessario per spostare il grafico nel punto giusto
 
+        svgContainer.select(".bars")
+            .selectAll("labels")
+            .data(foundationFoods)
+            .enter()
+            .append("text")
+            .text(function (d) { return d["foodNutrients"][1]["amount"] + " Kcal" })
+            .attr("font-family", "sans-serif")
+            .attr("font-weight", "bold")
+            .attr("x", function (d) { return x(d["foodNutrients"][1]["amount"]) + barChartMargins.left + 10; })
+            .attr("y", function (d) { return y(d["description"]) + barChartMargins.top / 2 })
+            .attr("width", function (d) { return x(d["foodNutrients"][1]["amount"]); })
+            .attr("height", y.bandwidth())
+            .attr("transform", "translate(0," + barChartMargins.top + ")")      // necessario per spostare il grafico nel punto giusto
+
+
         bars.on("mouseover", function () { d3.select(this).attr("fill", "orange") })
         bars.on("mouseout", function () { d3.select(this).attr("fill", "#69b3a2") })
+
+
         /*
         data.forEach(datacase => {
             drawBar(datacase, offset)
