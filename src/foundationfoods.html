@@ -10,11 +10,19 @@
             height: 30px;
             margin-right: 10px;
         }
+
+        #followerDiv {
+            position: absolute;
+            display: none;
+            z-index: 9999;
+        }
     </style>
 </head>
 
 <body style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
-    <div style="margin-left: 40px; margin-top: 20px;">
+    <div id="followerDiv"></div>
+
+    <div id="sortingButtonsDiv" style="margin-left: 40px; margin-top: 20px;">
         <span style="font-family: sans-serif; margin-right: 10px;">Sort by: </span>
         <button id="sortByKcalButton">Kcal</button>
         <button id="sortByWaterButton">Water</button>
