@@ -4,7 +4,44 @@
 <head>
     <meta charset="utf-8">
     <title>D3.js Foundation Foods</title>
+    <!-- Bootstrap reference -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
+        .overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -45%);
+            width: 75%;
+            height: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            border-radius: 50px;
+            word-wrap: break-word;
+        }
+
+        .overlay h1 {
+            color: white;
+            font-size: 4em;
+            text-align: center;
+        }
+
+        .overlay h3 {
+            color: white;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .overlay p {
+            color: white;
+            font-size: 2em;
+            text-align: center;
+        }
+
+
         .button {
             width: 120px;
             height: 30px;
@@ -14,7 +51,7 @@
         #followerDiv {
             position: fixed;
             display: none;
-            z-index: 9999;
+            z-index: 9998;
 
             background-color: antiquewhite;
             opacity: 0.95;
@@ -94,6 +131,13 @@
 </head>
 
 <body style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+    <div id="welcomingOverlay" class="overlay">
+        <h1 style="margin-top: 40px;">Welcome</h1>
+        <h1>-</h1>
+        <h3>With this tool, you can visualize the Foundation Foods dataset made by FoodData Central (U.S. Department of
+            Agriculture) </h3>
+        <h3 style="margin-bottom: 40px;">Start by selecting a sorting strategy with the buttons on top of the page</h3>
+    </div>
     <div id="followerDiv">
         <div id="legendDiv">
             <h3 id="foodNameLegend" style="margin-left: 20px; margin-right: 20px; font-family: sans-serif;">Qua ci va il
@@ -122,14 +166,19 @@
             </div>
         </div>
     </div>
-
+    <nav class="navbar navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">
+            <img src="../images/navbarLogo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            Foundation Foods visualization tool
+        </a>
+    </nav>
     <div id="sortingButtonsDiv" style="margin-left: 40px; margin-top: 20px;">
         <span style="font-family: sans-serif; margin-right: 10px;">Sort by: </span>
-        <button id="sortByKcalButton">Kcal</button>
-        <button id="sortByWaterButton">Water</button>
-        <button id="sortByProteinButton">Protein</button>
-        <button id="sortByTotalLipidButton">Total lipid</button>
-        <button id="sortByCarbohydratesButton">Carbohydrates</button>
+        <button type="button" class="btn btn-dark" id="sortByKcalButton">Kcal</button>
+        <button type="button" class="btn btn-primary" id="sortByWaterButton">Water</button>
+        <button type="button" class="btn btn-danger" id="sortByProteinButton">Protein</button>
+        <button type="button" class="btn btn-warning" id="sortByTotalLipidButton">Total lipid</button>
+        <button type="button" class="btn btn-success" id="sortByCarbohydratesButton">Carbohydrates</button>
     </div>
     <div style="margin-left: 40px; margin-top: 20px;">
         <span style="font-family: sans-serif; margin-right: 10px;">All reported values are for a portion of 100g</span>

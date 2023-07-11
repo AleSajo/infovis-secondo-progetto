@@ -28,7 +28,11 @@ var svgContainer = d3.select("body")
     .style("background-color", "#f5f5f5")
 
 
-// Initial bar chart drawing
+// Welcoming drawing
+d3.select("body")
+
+
+/*
 d3.json("../FoundationFoodsApril2023.json")
     .then(function (data) {
         console.log("Stampo data['FoundationFoods']")
@@ -104,6 +108,7 @@ d3.json("../FoundationFoodsApril2023.json")
     .catch(function (error) {
         console.log(error); // Some error handling here
     });
+*/
 
 
 // Prende un alimento come parametro e restituisce un dizionario di nutrienti da visualizzare nella Pie Chart
@@ -214,18 +219,20 @@ function removePieChart() {
 function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {    // facciamo che questo attributo è per esempio la stringa "Water"
     // cancella il bar chart precedente
     d3.select("svg").selectAll("g").remove()
+    // cancella l'overlay
+    d3.select("#welcomingOverlay").remove()
 
     // imposta il colore delle barre a seconda dell'xAxisAttribute
     var barColor = "#000000"
     switch (xAxisAttribute) {
         case "Energy (Atwater General Factors)":
-            barColor = "#ff2a12"
+            barColor = "#4a4a4a"
             break
         case "Water":
             barColor = "#59bfff"
             break
         case "Protein":
-            barColor = "#c23c3c"
+            barColor = "#e33636"
             break
         case "Total lipid (fat)":
             barColor = "#dece6a"
