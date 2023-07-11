@@ -105,7 +105,37 @@ d3.json("../FoundationFoodsApril2023.json")
         console.log(error); // Some error handling here
     });
 
-function drawPieChart() {
+
+// Prende un alimento come parametro e restituisce un dizionario di nutrienti da visualizzare nella Pie Chart
+function createDictOfNutrients(food) {  //deve prendere come parametro il singolo cibo di cui vogliamo i nutrienti
+    const dictOfNutrients = { water: 0, protein: 0, fat: 0, carbohydrates: 0, other: 0 }
+
+    food["foodNutrients"].forEach(nutrient => {
+        if (nutrient["nutrient"]["name"] == "Water")
+            dictOfNutrients.water = nutrient["amount"]
+    });
+    food["foodNutrients"].forEach(nutrient => {
+        if (nutrient["nutrient"]["name"] == "Protein")
+            dictOfNutrients.protein = nutrient["amount"]
+    });
+    food["foodNutrients"].forEach(nutrient => {
+        if (nutrient["nutrient"]["name"] == "Total lipid (fat)")
+            dictOfNutrients.fat = nutrient["amount"]
+    });
+    food["foodNutrients"].forEach(nutrient => {
+        if (nutrient["nutrient"]["name"] == "Carbohydrate, by difference")
+            dictOfNutrients.carbohydrates = nutrient["amount"]
+    });
+    // devo correggere l'assenza di nutrienti mettendo "other"
+    var other = 100 - (dictOfNutrients.water + dictOfNutrients.protein + dictOfNutrients.fat + dictOfNutrients.carbohydrates)
+    dictOfNutrients.other = other
+    console.log(dictOfNutrients)
+
+    return dictOfNutrients      // lo restituisco e dovrebbe andare a finire nella variabile "data" che disegna la torta
+}
+
+// disegna la pie chart accanto al cursore. Deve prendere come parametro un dizionario con i valori da rappresentare
+function drawPieChart(dictOfNutrients) {
     /*
     var svgPieChart = d3.select("body")
         .select("#followerDiv")
@@ -135,11 +165,15 @@ function drawPieChart() {
         .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
     // Create dummy data
-    const data = { a: 9, b: 20, c: 30, d: 8, e: 12 }
+    // Devo trovare il modo di passare a questo data un array con direttamente i valori
+    // L'idea è comporre un dizionario con i nutrienti del cibo nella barra su cui passo
+    // const data = { a: 9, b: 20, c: 30, d: 8, e: 12 }
+    const data = dictOfNutrients
 
     // set the color scale
+    // in ordine sono water, protein, lipid, carbohydrates, other
     const color = d3.scaleOrdinal()
-        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56"])
+        .range(["#59bfff", "#c23c3c", "#dece6a", "#70c47f", "#6b6b6b"])
 
     // Compute the position of each group on the pie:
     const pie = d3.pie()
@@ -147,7 +181,7 @@ function drawPieChart() {
     const data_ready = pie(Object.entries(data))
 
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-    svg.selectAll('whatever')
+    svg.selectAll("pieChart")
         .data(data_ready)
         .join('path')
         .attr('d', d3.arc()
@@ -157,7 +191,7 @@ function drawPieChart() {
         .attr('fill', function (d) { return (color(d.data[1])) })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
-        .style("opacity", 0.7)
+        .style("opacity", 0.9)
 
 }
 
@@ -286,7 +320,7 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {    // faccia
     svgContainer.selectAll(".bar").on("mouseover", function () {
         d3.select(this).attr("fill", "orange")
         document.getElementById("followerDiv").style.display = "block"
-        drawPieChart();
+        drawPieChart(createDictOfNutrients(d3.select(this).data()[0]));      // ************ QUA CI VA IL FOOD RELATIVO ALLA BARRA SU CUI STO PASSANDO
     })
     svgContainer.selectAll(".bar").on("mouseout", function () {
         d3.select(this).attr("fill", barColor)
