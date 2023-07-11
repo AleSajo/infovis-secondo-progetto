@@ -31,7 +31,7 @@
 
         .overlay h3 {
             color: white;
-            font-size: 2em;
+            font-size: 1.5em;
             text-align: center;
         }
 
@@ -53,6 +53,8 @@
             display: none;
             z-index: 9998;
 
+            width: 320px;
+
             background-color: antiquewhite;
             opacity: 0.95;
             border-style: solid;
@@ -70,7 +72,9 @@
 
         .grid-item {
             padding: 0px;
+            height: 30px;
             margin-top: 10px;
+            margin-bottom: 10px;
             font-family: sans-serif;
             font-size: 15px;
             font-weight: bold;
@@ -123,7 +127,7 @@
         }
 
         .legendValues {
-            margin-top: 5px;
+            margin-top: 0px;
             margin-left: 25px;
             text-align: center;
         }
@@ -131,17 +135,20 @@
 </head>
 
 <body style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0;">
+    <!-- Welcoming overlay -->
     <div id="welcomingOverlay" class="overlay">
         <h1 style="margin-top: 40px;">Welcome</h1>
-        <h1>-</h1>
+        <h1>&#128075</h1>
         <h3>With this tool, you can visualize the Foundation Foods dataset made by FoodData Central (U.S. Department of
             Agriculture) </h3>
-        <h3 style="margin-bottom: 40px;">Start by selecting a sorting strategy with the buttons on top of the page</h3>
+        <h3 style="margin-bottom: 40px;">Start by selecting a sorting strategy with the buttons on top of this box</h3>
     </div>
+
+    <!-- Follower Div Legend -->
     <div id="followerDiv">
         <div id="legendDiv">
-            <h3 id="foodNameLegend" style="margin-left: 20px; margin-right: 20px; font-family: sans-serif;">Qua ci va il
-                nome del cibo</h3>
+            <h3 id="foodNameLegend"
+                style="margin-left: 20px; margin-right: 20px; margin-bottom: 0px; font-family: sans-serif;"></h3>
             <div class="grid-container">
                 <div class="grid-item">
                     <div id="waterBox"></div>Water
@@ -166,12 +173,34 @@
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-dark bg-primary">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">
             <img src="../images/navbarLogo.png" width="30" height="30" class="d-inline-block align-top" alt="">
             Foundation Foods visualization tool
         </a>
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="https://fdc.nal.usda.gov/download-datasets.html"
+                target="_blank">Source</a>
+        </div>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link ml-auto" href="https://github.com/AleSajo" target="_blank">Made by Alessandro
+                Sajeva</a>
+        </div>
     </nav>
+
+    <!-- Info -->
+    <div style="margin-left: 40px; margin-top: 20px;">
+        <span style="font-family: sans-serif; margin-right: 10px;">Data is from U.S. Department of Agriculture (check
+            "Source" in the navbar). Released on 4th April 2023.</span>
+    </div>
+    <!-- 100g disclaimer -->
+    <div style="margin-left: 40px; margin-top: 20px;">
+        <span style="font-family: sans-serif; margin-right: 10px;">All reported values are for a portion of 100g.</span>
+    </div>
+
+    <!-- Sorting buttons -->
     <div id="sortingButtonsDiv" style="margin-left: 40px; margin-top: 20px;">
         <span style="font-family: sans-serif; margin-right: 10px;">Sort by: </span>
         <button type="button" class="btn btn-dark" id="sortByKcalButton">Kcal</button>
@@ -180,9 +209,8 @@
         <button type="button" class="btn btn-warning" id="sortByTotalLipidButton">Total lipid</button>
         <button type="button" class="btn btn-success" id="sortByCarbohydratesButton">Carbohydrates</button>
     </div>
-    <div style="margin-left: 40px; margin-top: 20px;">
-        <span style="font-family: sans-serif; margin-right: 10px;">All reported values are for a portion of 100g</span>
-    </div>
+
+    <!-- Scripts -->
     <script src="../lib/d3-7.8.4/dist/d3.min.js"></script>
     <script src="foundationfoods.js"></script>
 </body>
