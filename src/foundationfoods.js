@@ -112,7 +112,7 @@ function createDictOfNutrients(food) {  //deve prendere come parametro il singol
 
     food["foodNutrients"].forEach(nutrient => {
         if (nutrient["nutrient"]["name"] == "Water")
-            dictOfNutrients.water = nutrient["amount"]
+            dictOfNutrients.water = nutrient["amount"] + 0.001
     });
     food["foodNutrients"].forEach(nutrient => {
         if (nutrient["nutrient"]["name"] == "Protein")
@@ -156,7 +156,7 @@ function drawPieChart(dictOfNutrients) {
     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
     const radius = Math.min(width, height) / 2 - margin;
 
-    // append the svg object to the div called 'my_dataviz'
+    // append the svg object to the div called "followerDiv" that follows the cursor
     const svg = d3.select("#followerDiv")
         .append("svg")
         .attr("width", width)
@@ -164,10 +164,7 @@ function drawPieChart(dictOfNutrients) {
         .append("g")
         .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
-    // Create dummy data
-    // Devo trovare il modo di passare a questo data un array con direttamente i valori
-    // L'idea è comporre un dizionario con i nutrienti del cibo nella barra su cui passo
-    // const data = { a: 9, b: 20, c: 30, d: 8, e: 12 }
+    // Salvo in questa variabile il dizionario di nutrienti passato come parametro
     const data = dictOfNutrients
 
     // set the color scale
