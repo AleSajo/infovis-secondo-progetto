@@ -116,15 +116,15 @@ function createDictOfNutrients(food) {  //deve prendere come parametro il singol
     });
     food["foodNutrients"].forEach(nutrient => {
         if (nutrient["nutrient"]["name"] == "Protein")
-            dictOfNutrients.protein = nutrient["amount"]
+            dictOfNutrients.protein = nutrient["amount"] + 0.001
     });
     food["foodNutrients"].forEach(nutrient => {
         if (nutrient["nutrient"]["name"] == "Total lipid (fat)")
-            dictOfNutrients.fat = nutrient["amount"]
+            dictOfNutrients.fat = nutrient["amount"] + 0.001
     });
     food["foodNutrients"].forEach(nutrient => {
         if (nutrient["nutrient"]["name"] == "Carbohydrate, by difference")
-            dictOfNutrients.carbohydrates = nutrient["amount"]
+            dictOfNutrients.carbohydrates = nutrient["amount"] + 0.001
     });
     // devo correggere l'assenza di nutrienti mettendo "other"
     var other = 100 - (dictOfNutrients.water + dictOfNutrients.protein + dictOfNutrients.fat + dictOfNutrients.carbohydrates)
@@ -149,15 +149,15 @@ function drawPieChart(dictOfNutrients) {
     */
 
     // set the dimensions and margins of the graph
-    const width = 400,
-        height = 400,
+    const width = 300,
+        height = 300,
         margin = 10;
 
     // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
     const radius = Math.min(width, height) / 2 - margin;
 
     // append the svg object to the div called "followerDiv" that follows the cursor
-    const svg = d3.select("#followerDiv")
+    const svgPieChart = d3.select("#followerDiv")
         .append("svg")
         .attr("width", width)
         .attr("height", height)
@@ -178,7 +178,7 @@ function drawPieChart(dictOfNutrients) {
     const data_ready = pie(Object.entries(data))
 
     // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-    svg.selectAll("pieChart")
+    svgPieChart.selectAll("pieChart")
         .data(data_ready)
         .join('path')
         .attr('d', d3.arc()
@@ -188,7 +188,7 @@ function drawPieChart(dictOfNutrients) {
         .attr('fill', function (d) { return (color(d.data[1])) })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
-        .style("opacity", 0.9)
+        .style("opacity", 1)
 
 }
 
