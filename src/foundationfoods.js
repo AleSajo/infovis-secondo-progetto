@@ -28,91 +28,8 @@ var svgContainer = d3.select("body")
     .style("background-color", "#f5f5f5")
 
 
-// Welcoming drawing
-d3.select("body")
-
-
-/*
-d3.json("../FoundationFoodsApril2023.json")
-    .then(function (data) {
-        console.log("Stampo data['FoundationFoods']")
-        console.log(data["FoundationFoods"])
-        var foundationFoods = data["FoundationFoods"]
-        console.log(foundationFoods[0]["description"])
-        console.log(foundationFoods.map(function (d) { return d["description"] }))
-
-
-        // Add X axis
-        var x = d3.scaleLinear()
-            .domain([0, 1500])
-            .range([0, width]);
-
-        // Draw X axis on top
-        svgContainer.append("g")
-            .attr("transform", "translate(" + barChartMargins.left + "," + margins.top + ")")
-            .call(d3.axisTop(x))
-            .selectAll("text")
-            .attr("transform", "translate(-10,-12)rotate(-30)")
-            .style("text-anchor", "end")
-            .style("font-size", "15px")
-            .style("font-weight", "bold")
-
-        // Add Y axis with bands
-        var y = d3.scaleBand()
-            .range([0, 5000])
-            .domain(foundationFoods.map(function (d) { return d["description"] }))
-            .padding(.1);
-
-        // Draw Y axis on left. d3.axisLeft() takes the y scaleBand as a parameter
-        svgContainer.append("g")
-            .call(d3.axisLeft(y))
-            .attr("transform", "translate(" + barChartMargins.left + ",40)")
-
-
-        // Add bars
-        // Bind data and draw bars
-        svgContainer.append("g")
-            .attr("class", "bars")
-            .selectAll("bars")
-            .data(foundationFoods)
-            .enter()
-            .append("rect")
-            .attr("class", "bar")
-            .attr("x", barChartMargins.left)
-            .attr("y", function (d) { return y(d["description"]) })
-            .attr("width", function (d) { return x(d["foodNutrients"][1]["amount"]); })
-            .attr("height", y.bandwidth())
-            .attr("fill", "#ff2a12")
-            .attr("transform", "translate(0," + barChartMargins.top + ")")      // necessario per spostare il grafico nel punto giusto
-
-        // Add labels, need binding again the data to the labels
-        svgContainer.select(".bars")
-            .selectAll("labels")
-            .data(foundationFoods)
-            .enter()
-            .append("text")
-            .text(function (d) { return d["foodNutrients"][1]["amount"] + " Kcal/100g" })
-            .attr("font-family", "sans-serif")
-            .attr("font-weight", "bold")
-            .attr("x", function (d) { return x(d["foodNutrients"][1]["amount"]) + barChartMargins.left + 10; })
-            .attr("y", function (d) { return y(d["description"]) + barChartMargins.top / 2.5 })
-            .attr("width", function (d) { return x(d["foodNutrients"][1]["amount"]); })
-            .attr("height", y.bandwidth())
-            .attr("transform", "translate(0," + barChartMargins.top + ")")      // necessario per spostare il grafico nel punto giusto
-
-        // Cambia colore al passaggio del mouse
-        svgContainer.selectAll(".bar").on("mouseover", function () { d3.select(this).attr("fill", "orange") })
-        svgContainer.selectAll(".bar").on("mouseout", function () { d3.select(this).attr("fill", "#69b3a2") })
-
-    })
-    .catch(function (error) {
-        console.log(error); // Some error handling here
-    });
-*/
-
-
 // Prende un alimento come parametro e restituisce un dizionario di nutrienti da visualizzare nella Pie Chart
-function createDictOfNutrients(food) {  //deve prendere come parametro il singolo cibo di cui vogliamo i nutrienti
+function createDictOfNutrients(food) {
     const dictOfNutrients = { water: 0, protein: 0, fat: 0, carbohydrates: 0, other: 0 }
 
     food["foodNutrients"].forEach(nutrient => {
@@ -139,20 +56,8 @@ function createDictOfNutrients(food) {  //deve prendere come parametro il singol
     return dictOfNutrients      // lo restituisco e dovrebbe andare a finire nella variabile "data" che disegna la torta
 }
 
-// disegna la pie chart accanto al cursore. Deve prendere come parametro un dizionario con i valori da rappresentare
+// Disegna la pie chart accanto al cursore. Prende come parametro il nome e il dizionario con i nutrienti
 function drawPieChart(foodName, dictOfNutrients) {
-    /*
-    var svgPieChart = d3.select("body")
-        .select("#followerDiv")
-        .append("svg")
-        .attr("width", 300)
-        .attr("height", 300)
-        .attr("transform", "translate(" + margins.left + "," + margins.top + ")")
-        .attr("overflow", "scroll")
-        .style("border-style", "solid")
-        .style("background-color", "#f5f5f5")
-    */
-
     // modifica il nome del riquadro della legenda
     d3.select("#foodNameLegend")
         .text(foodName)
