@@ -135,7 +135,7 @@ function createDictOfNutrients(food) {  //deve prendere come parametro il singol
 }
 
 // disegna la pie chart accanto al cursore. Deve prendere come parametro un dizionario con i valori da rappresentare
-function drawPieChart(dictOfNutrients) {
+function drawPieChart(foodName, dictOfNutrients) {
     /*
     var svgPieChart = d3.select("body")
         .select("#followerDiv")
@@ -147,6 +147,11 @@ function drawPieChart(dictOfNutrients) {
         .style("border-style", "solid")
         .style("background-color", "#f5f5f5")
     */
+
+    // modifica il nome del riquadro della legenda
+    d3.select("#foodNameLegend")
+        .text(foodName)
+
 
     // set the dimensions and margins of the graph
     const width = 300,
@@ -188,8 +193,18 @@ function drawPieChart(dictOfNutrients) {
         .attr('fill', function (d) { return (color(d.data[1])) })
         .attr("stroke", "black")
         .style("stroke-width", "2px")
-        .style("opacity", 1)
 
+    // seleziona i tag <p> che devono contenere i valori nutrizionali nella legenda
+    d3.select("#waterValue")
+        .text(dictOfNutrients.water.toFixed(0) + " %")
+    d3.select("#proteinValue")
+        .text(dictOfNutrients.protein.toFixed(0) + " %")
+    d3.select("#fatValue")
+        .text(dictOfNutrients.fat.toFixed(0) + " %")
+    d3.select("#carbohydratesValue")
+        .text(dictOfNutrients.carbohydrates.toFixed(0) + " %")
+    d3.select("#otherValue")
+        .text(dictOfNutrients.other.toFixed(0) + " %")
 }
 
 function removePieChart() {
@@ -317,7 +332,7 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {    // faccia
     svgContainer.selectAll(".bar").on("mouseover", function () {
         d3.select(this).attr("fill", "orange")
         document.getElementById("followerDiv").style.display = "block"
-        drawPieChart(createDictOfNutrients(d3.select(this).data()[0]));      // ************ QUA CI VA IL FOOD RELATIVO ALLA BARRA SU CUI STO PASSANDO
+        drawPieChart(d3.select(this).data()[0].description, createDictOfNutrients(d3.select(this).data()[0]));      // ************ QUA CI VA IL FOOD RELATIVO ALLA BARRA SU CUI STO PASSANDO
     })
     svgContainer.selectAll(".bar").on("mouseout", function () {
         d3.select(this).attr("fill", barColor)
