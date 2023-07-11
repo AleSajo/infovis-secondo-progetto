@@ -53,7 +53,7 @@ function createDictOfNutrients(food) {
     dictOfNutrients.other = other
     console.log(dictOfNutrients)
 
-    return dictOfNutrients      // lo restituisco e dovrebbe andare a finire nella variabile "data" che disegna la torta
+    return dictOfNutrients      // lo restituisco e va a finire nella variabile "data" che disegna la torta
 }
 
 // Disegna la pie chart accanto al cursore. Prende come parametro il nome e il dizionario con i nutrienti
@@ -117,14 +117,16 @@ function drawPieChart(foodName, dictOfNutrients) {
         .text(dictOfNutrients.other.toFixed(0) + " %")
 }
 
+// viene eseguita al mouseout dalle bars
 function removePieChart() {
     d3.select("body").select("#followerDiv").select("svg").remove()
 }
 
-function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {    // facciamo che questo attributo è per esempio la stringa "Water"
+// funzione principale che disegna il bar chart
+function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
     // cancella il bar chart precedente
     d3.select("svg").selectAll("g").remove()
-    // cancella l'overlay
+    // cancella l'overlay se c'è
     d3.select("#welcomingOverlay").remove()
 
     // imposta il colore delle barre a seconda dell'xAxisAttribute
@@ -236,7 +238,6 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {    // faccia
             return x(nutrientAmount) + barChartMargins.left + 20
         })
         .attr("y", function (d) { return y(d["description"]) + barChartMargins.top / 2.5 })
-        //.attr("width", function (d) { return x(d["foodNutrients"][1]["amount"]); })
         .attr("height", y.bandwidth())
         .attr("transform", "translate(0," + barChartMargins.top + ")")      // necessario per spostare il grafico nel punto giusto
 
