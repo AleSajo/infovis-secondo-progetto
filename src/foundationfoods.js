@@ -8,7 +8,7 @@ const margins = {
 }
 
 const barChartMargins = {
-    left: 300,
+    left: 170,
     top: 40
 }
 
@@ -152,9 +152,9 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
     // imposta dei valori di scala a seconda dell'xAxisAttribute
     var maxDomainValue = 2000
     if (xAxisAttribute == "Energy (Atwater General Factors)") {
-        maxDomainValue = 1500
+        maxDomainValue = 1300
     } else {
-        maxDomainValue = 150
+        maxDomainValue = 130
     }
 
     // Define X axis (horizontal with values to represent)
@@ -167,7 +167,6 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
         .attr("transform", "translate(" + barChartMargins.left + "," + margins.top + ")")
         .call(d3.axisTop(x))
         .selectAll("text")
-        .attr("transform", "translate(-10,-12)rotate(-30)")
         .style("text-anchor", "end")
         .style("font-size", "15px")
         .style("font-weight", "bold")
@@ -180,8 +179,15 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
 
     // Draw Y axis on left. d3.axisLeft() takes the y scaleBand as a parameter
     svgContainer.append("g")
-        .call(d3.axisLeft(y))
+        .call(d3.axisLeft(y).tickFormat(t => {          // modifica il formato delle etichette
+            if (t.length > 20)
+                return t.slice(0, 20) + "... "
+            else
+                return t
+        }))
         .attr("transform", "translate(" + barChartMargins.left + ",40)")
+        .style("font-size", "12px")
+        .style("font-weight", "bold")
 
     // Add bars
     // Bind data and draw bars
@@ -225,7 +231,7 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
             return nutrientAmount + unitOfMeasure
         })
         .attr("font-family", "sans-serif")
-        .attr("font-weight", "bold")
+        //.attr("font-weight", "bold")
         .attr("x", function (d) {
             nutrientAmount = 0;
             d["foodNutrients"].forEach(nutrient => {
@@ -287,7 +293,7 @@ function sortByKcal() {
             })
 
             console.log(foodArray)
-            drawBarChart(foodArray, "Energy (Atwater General Factors)", " Kcal/100g")
+            drawBarChart(foodArray, "Energy (Atwater General Factors)", " Kcal")
         })
         .catch(function (error) {
             console.log(error); // Some error handling here
