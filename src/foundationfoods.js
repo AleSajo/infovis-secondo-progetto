@@ -157,7 +157,7 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
         maxDomainValue = 150
     }
 
-    // Add X axis
+    // Define X axis (horizontal with values to represent)
     var x = d3.scaleLinear()
         .domain([0, maxDomainValue])
         .range([0, width]);
@@ -172,7 +172,7 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
         .style("font-size", "15px")
         .style("font-weight", "bold")
 
-    // Add Y axis with bands
+    // Add Y axis with bands (vertical with labels for each bar)
     var y = d3.scaleBand()
         .range([0, 5000])
         .domain(arrayOfData.map(function (d) { return d["description"] }))
@@ -182,7 +182,6 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
     svgContainer.append("g")
         .call(d3.axisLeft(y))
         .attr("transform", "translate(" + barChartMargins.left + ",40)")
-
 
     // Add bars
     // Bind data and draw bars
