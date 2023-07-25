@@ -32,6 +32,7 @@ const selectedFoods = new Array();
 // Create an SVG container in the document body
 var svgContainer = d3.select("body")
     .append("svg")
+    .attr("id", "barChartSvg")
     .attr("width", width)
     .attr("height", height)
     .attr("transform", "translate(" + margins.left + "," + margins.top + ")")
@@ -184,6 +185,7 @@ function drawSumPieChart() {
     const radius = Math.min(width, height) / 2 - margin;
 
     // append the svg object to the div called "sumPieChartDiv" that follows the cursor
+    d3.select("#sumPieChartDiv").select("svg").remove()
     const svgPieChart = d3.select("#sumPieChartDiv")
         .insert("span", ":first-child")
         .append("svg")
@@ -234,7 +236,7 @@ function drawSumPieChart() {
 // funzione principale che disegna il bar chart
 function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
     // cancella il bar chart precedente
-    d3.select("svg").selectAll("g").remove()
+    d3.select("#barChartSvg").selectAll("g").remove()
     // cancella l'overlay se c'è
     d3.select("#welcomingOverlay").remove()
 
