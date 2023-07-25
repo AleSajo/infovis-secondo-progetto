@@ -137,6 +137,7 @@ function removePieChart() {
     d3.select("body").select("#followerDiv").select("svg").remove()
 }
 
+// restituisce un oggetto food dandogli il nome
 function findFoodByName(foodName) {
     var foodToReturn = {}
     console.log("findFoodByName executed")
@@ -147,28 +148,9 @@ function findFoodByName(foodName) {
             foodToReturn = food
     })
     return foodToReturn
-    /*
-    fetch("../FoundationFoodsApril2023.json")
-        .then(function (data) {
-            const foodArray = data["FoundationFoods"];
-            foodArray.forEach(function (food) {
-                console.log(food["description"])
-                console.log(foodName)
-                if (food["description"] == foodName) {
-                    console.log(food)
-                    // qui manca l'assegnazione che non vuole funzionare
-                }
-            })
-            return result;
-        })
-        .catch(function (error) {
-            console.log(error); // Some error handling here
-        });
-    console.log(foodObject)
-    return foodObject;
-    */
 }
 
+// funzione che crea il pie chart della somma dei cibi
 function drawSumPieChart() {
     console.log("Drawing sum pie chart!")
     /* per ogni cibo contenuto nella lista selectedFoods devo calcolare il dizionario dei nutrienti con la funzione 
@@ -190,6 +172,63 @@ function drawSumPieChart() {
     })
     console.log("Showing the sum of nutrients dictionary: ")
     console.log(summedNutrientsDict)
+
+    // Da qui in poi avviene il disegno: ***************************************************************************************
+
+    // set the dimensions and margins of the graph
+    const width = 300,
+        height = 300,
+        margin = 10;
+
+    // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+    const radius = Math.min(width, height) / 2 - margin;
+
+    // append the svg object to the div called "sumPieChartDiv" that follows the cursor
+    const svgPieChart = d3.select("#sumPieChartDiv")
+        .insert("span", ":first-child")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    // Salvo in questa variabile il dizionario di nutrienti SOMMATI che ho costruito qualche riga sopra
+    const data = summedNutrientsDict
+
+    // set the color scale
+    // in ordine sono water, protein, lipid, carbohydrates, other
+    const color = d3.scaleOrdinal()
+        .range(["#59bfff", "#c23c3c", "#dece6a", "#70c47f", "#6b6b6b"])
+
+    // Compute the position of each group on the pie:
+    const pie = d3.pie()
+        .value(function (d) { return d[1] })
+    const data_ready = pie(Object.entries(data))
+
+    // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
+    svgPieChart.selectAll("pieChart")
+        .data(data_ready)
+        .join('path')
+        .attr('d', d3.arc()
+            .innerRadius(0)
+            .outerRadius(radius)
+        )
+        .attr('fill', function (d) { return (color(d.data[1])) })
+        .attr("stroke", "black")
+        .style("stroke-width", "2px")
+
+    // seleziona i tag <p> che devono contenere i valori nutrizionali nella legenda
+    d3.select("#sumWaterValue")
+        .text(summedNutrientsDict.water.toFixed(0) + " %")
+    d3.select("#sumProteinValue")
+        .text(summedNutrientsDict.protein.toFixed(0) + " %")
+    d3.select("#sumFatValue")
+        .text(summedNutrientsDict.fat.toFixed(0) + " %")
+    d3.select("#sumCarbohydratesValue")
+        .text(summedNutrientsDict.carbohydrates.toFixed(0) + " %")
+    d3.select("#sumOtherValue")
+        .text(summedNutrientsDict.other.toFixed(0) + " %")
+
 }
 
 // funzione principale che disegna il bar chart
