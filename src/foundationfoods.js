@@ -1,12 +1,13 @@
+
+// ***** Questo blocco serve a precaricare il dataset in una variabile che posso usare più facilmente
 var response
 var foodsDataset = new Array()
-
 async function leggiDataset() {
     response = await fetch("../FoundationFoodsApril2023.json")
     foodsDataset = await response.json()
 }
-
 leggiDataset()
+// *****
 
 // set margins in a constant
 const margins = {
@@ -27,7 +28,7 @@ const height = 5200 - margins.top;
 
 // list of selected foods for the sum
 // Uso new Array() perché il forEach dà errore se lo dichiaro solo con "[]". In questo modo il tipo di variabile è ben definito.
-const selectedFoods = new Array();
+var selectedFoods = new Array();
 
 // Create an SVG container in the document body
 var svgContainer = d3.select("body")
@@ -154,6 +155,7 @@ function findFoodByName(foodName) {
 // funzione che crea il pie chart della somma dei cibi
 function drawSumPieChart() {
     console.log("Drawing sum pie chart!")
+    document.getElementById("sumPieChartDiv").style.display = "flex"
     /* per ogni cibo contenuto nella lista selectedFoods devo calcolare il dizionario dei nutrienti con la funzione 
         createDictOfNutrients, e poi a questo dizionario devo sommare i valori del successivo dizionario.
 
@@ -231,6 +233,16 @@ function drawSumPieChart() {
     d3.select("#sumOtherValue")
         .text(summedNutrientsDict.other.toFixed(0) + " %")
 
+}
+
+//funzione che resetta la lista e il sumPieChartDiv
+function resetSumPieChart() {
+    // resetta l'array
+    selectedFoods = new Array()
+    // resetta l'HTML
+    d3.select("#selectedFoodsList").selectAll("li").remove()
+    // nascondi il sumPieChartDiv
+    d3.select("#sumPieChartDiv").style("display", "none")
 }
 
 // funzione principale che disegna il bar chart
@@ -596,3 +608,6 @@ document.addEventListener("mousemove", function (event) {
 
 // Add event listener to calculate sum button
 document.getElementById("CalculateSumButton").addEventListener("click", drawSumPieChart)
+
+// Add event listener to reset the list and hide the sumPieChartDiv
+document.getElementById("ResetButton").addEventListener("click", resetSumPieChart)

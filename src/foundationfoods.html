@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
+        /* potrebbe essere ridondante perché imposto il flex quando clicco sul bottone */
         .flex-container {
             display: flex;
         }
@@ -230,8 +231,8 @@
         <button type="button" class="btn btn-danger" id="ResetButton">Reset list</button>
     </div>
 
-    <!-- Div that contains the pie chart, actually I make it visible but then it should be hided -->
-    <div id="sumPieChartDiv" class="flex-container" style="margin-left: 40px; margin-top: 20px;">
+    <!-- Div that contains the SUM pie chart, actually I make it visible but then it should be hided -->
+    <div id="sumPieChartDiv" class="flex-container" style="margin-left: 40px; margin-top: 20px; display: none;">
         <div id="sumLegendDiv" style="margin-left: 40px;">
             <div style="margin-left: 0px; margin-top: 20px; font-size: x-large; font-weight: bold;">Nutrients in
                 selected foods</div>
