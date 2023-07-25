@@ -195,11 +195,13 @@
     <div style="margin-left: 40px; margin-top: 20px;">
         <span style="font-family: sans-serif; margin-right: 10px;">Data is from U.S. Department of Agriculture (check
             "Source" in the navbar). Released on 4th April 2023.</span>
+        <p>All reported values are for a portion of 100g.</p>
     </div>
-    <!-- 100g disclaimer -->
+
+    <!-- 100g disclaimer
     <div style="margin-left: 40px; margin-top: 20px;">
         <span style="font-family: sans-serif; margin-right: 10px;">All reported values are for a portion of 100g.</span>
-    </div>
+    </div> -->
 
     <!-- Sorting buttons -->
     <div id="sortingButtonsDiv" style="margin-left: 40px; margin-top: 20px;">
@@ -210,6 +212,21 @@
         <button type="button" class="btn btn-warning" id="sortByTotalLipidButton">Total lipid</button>
         <button type="button" class="btn btn-success" id="sortByCarbohydratesButton">Carbohydrates</button>
     </div>
+
+
+    <div id="selectedFoodsDiv" style="margin-left: 40px; margin-top: 20px;">
+        <span style="font-family: sans-serif; margin-right: 10px;">Selected foods: </span>
+        <!-- Qui ci dovrei mettere la stampa della lista che riempio nel JS -->
+        <ul id="selectedFoodsList"></ul>
+    </div>
+
+    <!--  -->
+    <div id="CalculateSumButtonsDiv" style="margin-left: 40px; margin-top: 20px;">
+        <span style="font-family: sans-serif; margin-right: 10px;"></span>
+        <button type="button" class="btn btn-success" id="CalculateSumButton">Calculate sum</button>
+        <button type="button" class="btn btn-danger" id="ResetButton">Reset list</button>
+    </div>
+
 
     <!-- Scripts -->
     <script src="../lib/d3-7.8.4/dist/d3.min.js"></script>

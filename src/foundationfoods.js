@@ -1,3 +1,12 @@
+var response
+var foodsDataset = new Array()
+
+async function leggiDataset() {
+    response = await fetch("../FoundationFoodsApril2023.json")
+    foodsDataset = await response.json()
+}
+
+leggiDataset()
 
 // set margins in a constant
 const margins = {
@@ -16,6 +25,9 @@ const barChartMargins = {
 const width = window.innerWidth - (2 * margins.right);
 const height = 5200 - margins.top;
 
+// list of selected foods for the sum
+// Uso new Array() perché il forEach dà errore se lo dichiaro solo con "[]". In questo modo il tipo di variabile è ben definito.
+const selectedFoods = new Array();
 
 // Create an SVG container in the document body
 var svgContainer = d3.select("body")
@@ -30,6 +42,8 @@ var svgContainer = d3.select("body")
 
 // Prende un alimento come parametro e restituisce un dizionario di nutrienti da visualizzare nella Pie Chart
 function createDictOfNutrients(food) {
+    console.log("printo il parametro food che viene dato normalmente a createDictOfNutrients")
+    console.log(food)
     const dictOfNutrients = { water: 0, protein: 0, fat: 0, carbohydrates: 0, other: 0 }
 
     food["foodNutrients"].forEach(nutrient => {
@@ -51,6 +65,7 @@ function createDictOfNutrients(food) {
     // devo correggere l'assenza di nutrienti mettendo "other"
     var other = 100 - (dictOfNutrients.water + dictOfNutrients.protein + dictOfNutrients.fat + dictOfNutrients.carbohydrates)
     dictOfNutrients.other = other
+    console.log("Showing the dictionary of nutrients for the food:")
     console.log(dictOfNutrients)
 
     return dictOfNutrients      // lo restituisco e va a finire nella variabile "data" che disegna la torta
@@ -120,6 +135,61 @@ function drawPieChart(foodName, dictOfNutrients) {
 // viene eseguita al mouseout dalle bars
 function removePieChart() {
     d3.select("body").select("#followerDiv").select("svg").remove()
+}
+
+function findFoodByName(foodName) {
+    var foodToReturn = {}
+    console.log("findFoodByName executed")
+    // questa funzione deve restituire l'oggetto che ha quel nome. 
+    console.log(foodsDataset)
+    foodsDataset["FoundationFoods"].forEach(function (food) {
+        if (food["description"] == String(foodName))
+            foodToReturn = food
+    })
+    return foodToReturn
+    /*
+    fetch("../FoundationFoodsApril2023.json")
+        .then(function (data) {
+            const foodArray = data["FoundationFoods"];
+            foodArray.forEach(function (food) {
+                console.log(food["description"])
+                console.log(foodName)
+                if (food["description"] == foodName) {
+                    console.log(food)
+                    // qui manca l'assegnazione che non vuole funzionare
+                }
+            })
+            return result;
+        })
+        .catch(function (error) {
+            console.log(error); // Some error handling here
+        });
+    console.log(foodObject)
+    return foodObject;
+    */
+}
+
+function drawSumPieChart() {
+    console.log("Drawing sum pie chart!")
+    /* per ogni cibo contenuto nella lista selectedFoods devo calcolare il dizionario dei nutrienti con la funzione 
+        createDictOfNutrients, e poi a questo dizionario devo sommare i valori del successivo dizionario.
+
+        Una volta che ho il dizionario con i valori totali, posso passarlo alla funzione che disegna il PieChart,
+        ma al posto di passargli il food name, ci passo la stringa "Your selection"
+    */
+    // il dizionario di partenza a cui dovrò sommare tutti i valori
+    summedNutrientsDict = { water: 0, protein: 0, fat: 0, carbohydrates: 0, other: 0 }
+
+    selectedFoods.forEach(function (foodName) {
+        const currentDictOfNutrients = createDictOfNutrients(findFoodByName(foodName));
+        summedNutrientsDict["water"] = summedNutrientsDict["water"] + currentDictOfNutrients["water"]
+        summedNutrientsDict["protein"] = summedNutrientsDict["protein"] + currentDictOfNutrients["protein"]
+        summedNutrientsDict["fat"] = summedNutrientsDict["fat"] + currentDictOfNutrients["fat"]
+        summedNutrientsDict["carbohydrates"] = summedNutrientsDict["carbohydrates"] + currentDictOfNutrients["carbohydrates"]
+        summedNutrientsDict["other"] = summedNutrientsDict["other"] + currentDictOfNutrients["other"]
+    })
+    console.log("Showing the sum of nutrients dictionary: ")
+    console.log(summedNutrientsDict)
 }
 
 // funzione principale che disegna il bar chart
@@ -248,21 +318,36 @@ function drawBarChart(arrayOfData, xAxisAttribute, unitOfMeasure) {
 
     // Cambia colore al passaggio del mouse e mostra il followerDiv con la PieChart
     svgContainer.selectAll(".bar").on("mouseover", function () {
-        d3.select(this).attr("fill", "orange")
+        console.log("Mouseover su una barra!")
+        d3.select(this).style("stroke", "orange").style("stroke-width", "4px")
         document.getElementById("followerDiv").style.display = "block"
         drawPieChart(d3.select(this).data()[0].description, createDictOfNutrients(d3.select(this).data()[0]));      // ************ QUA CI VA IL FOOD RELATIVO ALLA BARRA SU CUI STO PASSANDO
     })
     svgContainer.selectAll(".bar").on("mouseout", function () {
-        d3.select(this).attr("fill", barColor)
+        console.log("Mouseout da una barra!")
+        d3.select(this).style("stroke", "orange").style("stroke-width", "0px")
         document.getElementById("followerDiv").style.display = "none"
         removePieChart();
     })
-
+    // aggiungi event handler per il click sulla barra. Il click dovrebbe inserire il nome del cibo nella lista selectedFoods
+    svgContainer.selectAll(".bar").on("click", function () {
+        console.log("clicked on a bar!")
+        d3.select(this).style("stroke", "orange").style("stroke-width", "4px")
+        d3.select(this).attr("fill", "orange")
+        selectedFoods.push(d3.select(this).data()[0].description)
+        console.log("Showing selectedFoods array:")
+        console.log(selectedFoods)
+        // Dovrei anche mostrarlo nell'HTML
+        const newListItem = document.createElement("li");
+        newListItem.textContent = d3.select(this).data()[0].description;
+        const listContainer = document.getElementById("selectedFoodsList")
+        listContainer.appendChild(newListItem)
+    })
 }
 
 // Click actions on sorting buttons
 function sortByKcal() {
-    console.log("SortByKcalButton has been clicked!")
+    console.log("SortByKcalButton has been clicked! Showing the sorted array:")
 
     d3.json("../FoundationFoodsApril2023.json")
         .then(function (data) {
@@ -301,7 +386,7 @@ function sortByKcal() {
 }
 
 function sortByWater() {
-    console.log("SortByWaterButton has been clicked!")
+    console.log("SortByWaterButton has been clicked! Showing the sorted array:")
     d3.json("../FoundationFoodsApril2023.json")
         .then(function (data) {
             foodArray = data["FoundationFoods"];
@@ -340,7 +425,7 @@ function sortByWater() {
 }
 
 function sortByProtein() {
-    console.log("SortByProteinButton has been clicked!")
+    console.log("SortByProteinButton has been clicked! Showing the sorted array:")
     d3.json("../FoundationFoodsApril2023.json")
         .then(function (data) {
             foodArray = data["FoundationFoods"];
@@ -378,7 +463,7 @@ function sortByProtein() {
 
 }
 function sortByTotalLipid() {
-    console.log("SortByTotalLipidButton has been clicked!")
+    console.log("SortByTotalLipidButton has been clicked! Showing the sorted array:")
     d3.json("../FoundationFoodsApril2023.json")
         .then(function (data) {
             foodArray = data["FoundationFoods"];
@@ -467,3 +552,6 @@ document.addEventListener("mousemove", function (event) {
     follower.style.left = event.clientX + 5 + "px";
     follower.style.top = event.clientY + 5 + "px";
 });
+
+// Add event listener to calculate sum button
+document.getElementById("CalculateSumButton").addEventListener("click", drawSumPieChart)
