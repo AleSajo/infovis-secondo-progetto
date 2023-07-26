@@ -222,16 +222,25 @@ function drawSumPieChart() {
         .style("stroke-width", "2px")
 
     // seleziona i tag <p> che devono contenere i valori nutrizionali nella legenda
+    sumWater = summedNutrientsDict.water / selectedFoods.length
     d3.select("#sumWaterValue")
-        .text(summedNutrientsDict.water.toFixed(0) + " %")
+        .text(sumWater.toFixed(0) + " %")
+
+    sumProtein = summedNutrientsDict.protein / selectedFoods.length
     d3.select("#sumProteinValue")
-        .text(summedNutrientsDict.protein.toFixed(0) + " %")
+        .text(sumProtein.toFixed(0) + " %")
+
+    sumFat = summedNutrientsDict.fat / selectedFoods.length
     d3.select("#sumFatValue")
-        .text(summedNutrientsDict.fat.toFixed(0) + " %")
+        .text(sumFat.toFixed(0) + " %")
+
+    sumCarbohydrates = summedNutrientsDict.carbohydrates / selectedFoods.length
     d3.select("#sumCarbohydratesValue")
-        .text(summedNutrientsDict.carbohydrates.toFixed(0) + " %")
+        .text(sumCarbohydrates.toFixed(0) + " %")
+
+    sumOther = summedNutrientsDict.other / selectedFoods.length
     d3.select("#sumOtherValue")
-        .text(summedNutrientsDict.other.toFixed(0) + " %")
+        .text(sumOther.toFixed(0) + " %")
 
 }
 
